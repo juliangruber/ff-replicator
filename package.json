@@ -9,7 +9,8 @@
     "mux-demux": "~3.4.3",
     "reconnect": "~0.4.2",
     "scuttlebutt": "~5.5.10",
-    "shoe": "~0.0.7"
+    "shoe": "~0.0.7",
+    "h": "~0.1.0"
   },
   "devDependencies": {
     "browserify": "*"

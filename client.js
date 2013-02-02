@@ -7,6 +7,7 @@ window.onerror = alert
 var Model = require('scuttlebutt/model')
 var reconnect = require('reconnect')
 var shoe = require('shoe')
+var h = require('h')
 
 /**
  * replication
@@ -33,7 +34,7 @@ addGauge('gauge2')
  */
 
 function addInput (name) {
-  var el = document.createElement('input')
+  var el = h('input')
 
   var lastValue
   el.addEventListener('keyup', function (ev) {
@@ -47,18 +48,15 @@ function addInput (name) {
     }
   })
   
-  document.body.appendChild(document.createTextNode(name))
+  document.body.appendChild(document.createTextNode(name + ' '))
   document.body.appendChild(el)
-  document.body.appendChild(document.createElement('br'))
+  document.body.appendChild(h('br'))
 }
 
 function addGauge (name) {
-  var el = document.createElement('div')
-  el.className = 'scale'
-  var meter = document.createElement('div')
-  meter.className = 'meter'
-  var count = document.createElement('div')
-  count.className = 'count'
+  var el = h('div.scale')
+  var meter = h('div.meter')
+  var count = h('div.count')
   el.appendChild(meter)
   el.appendChild(count)
   
@@ -87,21 +85,20 @@ function addGauge (name) {
   function update(el) {
     return function(e) {
       if (e.layerY < 0) return
-      window.el = el
-      el.querySelector('.meter').style.marginTop = e.layerY+'px'
+      meter.style.marginTop = e.layerY+'px'
       model.set(name, 100 - e.layerY)
     }
   }
   
   model.on('update', function (kv) {
     if (kv[0] == name) {
-      el.querySelector('.meter').style.marginTop = (100-kv[1])+'px'
+      meter.style.marginTop = (100-kv[1])+'px'
     }
   })
   
-  document.body.appendChild(document.createTextNode(name))
+  document.body.appendChild(document.createTextNode(name + ' '))
   document.body.appendChild(el)
-  document.body.appendChild(document.createElement('br'))
+  document.body.appendChild(h('br'))
 }
 
 /**
@@ -109,45 +106,10 @@ function addGauge (name) {
  */
 
 if (navigator.mozApps) {
-  var request = navigator.mozApps.getSelf();
-  var that = this;
-  request.onsuccess = function () {
-     if (!this.result) {
-        alert("uninstalled");
-        that.installUrl = (
-           location.href.substring(0, location.href.lastIndexOf("/")) +
-           "/manifest.webapp"
-        );
-        that.doIt = function() {
-           //*/ alert("Faking install from " + that.installUrl);
-           try {
-              var req2 = navigator.mozApps.install(that.installUrl);
-              req2.onsuccess = function(data) {
-                 alert("installed");
-                 //*/ alert("Bingo!");
-              };
-              req2.onerror = function() {
-                 that.error = this.error;
-                 alert("failed");
-              };
-           }catch (error) {
-              that.error = error;
-              alert("failed");
-           }
-        };
-     }else {
-        alert("installed");
-     }
-  };
-  request.onerror = function (error) {
-     that.error = error;
-     alert("failed");
-  };
-  var el = document.createElement('a')
-  el.innerHTML = 'install'
-  el.addEventListener('click', function () {
-    that.doIt()
-    return false
-  })
-  document.body.appendChild(el)
+  document.body.appendChild(h('button', 'install', {
+    click : navigator.mozApps.install.bind(
+      navigator.mozApps,
+      location.href.substring(0, location.href.lastIndexOf("/")) + '/manifest.webapp'
+    )
+  }))
 }
