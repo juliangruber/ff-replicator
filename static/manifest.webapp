@@ -1,0 +1,12 @@
+{
+  "version": "0.0.01",
+  "name": "replicator",
+  "launch_path": "index.html",
+  "description": "a simple replicator",
+  "developer": {
+    "name": "Julian Gruber",
+    "url": "https:/github.com/juliangruber"
+  },
+  "installs_allowed_from": ["*"],
+  "default_locale": "en"
+}

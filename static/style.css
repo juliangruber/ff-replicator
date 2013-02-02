@@ -1,0 +1,3 @@
+.scale { width: 50px; height: 200px; background-color: black; overflow: hidden; }
+.scale .meter { background-color: green; width: 100%; height: 100%; margin-top: 20px; }
+.scale .count { position : absolute; left : 70px; top : 120px; }
